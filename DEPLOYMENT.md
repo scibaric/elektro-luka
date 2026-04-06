@@ -17,15 +17,21 @@ SSH into your server and prepare the necessary directories and permissions. The 
 
 ```bash
 # SSH into your server
-ssh root@<YOUR_SERVER_IP>
+ssh user@<YOUR_SERVER_IP>
 
 # Create the required directories
 sudo mkdir -p /var/www/elektro-luka
 sudo mkdir -p /var/www/certbot
 
-# Set the correct permissions (adjust user/group if you aren't using root)
+# Set the correct permissions to your regular user
 sudo chown -R $USER:$USER /var/www/elektro-luka
 sudo chown -R $USER:$USER /var/www/certbot
+
+# CRITICAL for rootless Podman:
+# 1. Allow containers to keep running after you close your SSH connection
+loginctl enable-linger $USER
+# 2. Ensure containers automatically start if the server reboots
+systemctl --user enable podman-restart.service
 ```
 
 *Ensure that `podman` and `podman-compose` are installed on the server.*
