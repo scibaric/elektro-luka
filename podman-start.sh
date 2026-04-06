@@ -1,1 +1,0 @@
-podman run -d --name elektro-luka --restart unless-stopped -p 80:80 -v /var/www/elektro-luka:/usr/share/nginx/html:ro -v /var/www/elektro-luka/elektro-luka-nginx.conf:/etc/nginx/conf.d/default.conf:ro nginx:alpine

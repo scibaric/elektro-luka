@@ -1,0 +1,22 @@
+services:
+  nginx:
+    image: docker.io/nginx:alpine
+    container_name: elektro-luka
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/www/elektro-luka:/usr/share/nginx/html:ro,z
+      - /var/www/certbot:/var/www/certbot:ro,z
+      - letsencrypt:/etc/letsencrypt:ro
+      - ./${NGINX_CONF:-elektro-luka-nginx.conf}:/etc/nginx/conf.d/default.conf:ro,z
+
+  certbot:
+    image: docker.io/certbot/certbot
+    volumes:
+      - /var/www/certbot:/var/www/certbot:z
+      - letsencrypt:/etc/letsencrypt
+
+volumes:
+  letsencrypt:
